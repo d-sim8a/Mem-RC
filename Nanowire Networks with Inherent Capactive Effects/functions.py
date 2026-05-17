@@ -6,6 +6,13 @@ The following code will contain the functions, in some organized fashion TBD.
 
 '''
 
+import numpy as np
+import networkx as nx
+import itertools
+import random
+import scipy
+
+
 def hp_decay_model(t,y,curr,const_state,r):
     '''
     This is a modification to the HP model, with a decay term.
@@ -161,8 +168,6 @@ def evolution(t,dt, y, v_input, const_state, G, model, r, node_list, q_prev, gra
             G.edges[n1,n2]["Effective Conductance"] = g_eff[0,j]     # g_eff.shape = (1,len(edge_list))
     
     for idx, node in enumerate(source_nodes):
-        #print(source_nodes)
-        #print(idx)
         G.nodes[node]["Voltage"] = v_input[idx]
     
     voltages, node_voltages = memristor_voltages(G,node_list,source_nodes,drain_nodes,I_prev=I_prev,graph=graph)     # node voltages and memristor voltages
