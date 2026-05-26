@@ -344,3 +344,134 @@ def random_clustered_ring_graph(num_cluster,cluster_size,avg_degree,max_degree,m
         G.remove_nodes_from(remove_nodes)
 
     return G
+
+def random_modular_graph(num_cluster,cluster_size,avg_degree,max_degree,connect_list,max_connecting_nodes=2,
+                                series_or_parallel=None,num_connections=None,ran_cluster_connect=None):
+    '''
+    This is an updated version of the code for my ring graph, but with more user creation
+    
+    ''' 
+    G = nx.Graph()
+    for i in range(num_cluster):
+        nodes = np.arange(i * cluster_size, (i + 1) * cluster_size)
+        possible_edges = itertools.combinations(nodes, 2)
+        possible_edges = list(possible_edges)
+        # I have to make sure that each node is mentioned at least once
+        degree_array = np.minimum(np.random.poisson(avg_degree, size=cluster_size),max_degree - 1) # Within the community
+
+        if sum(degree_array)%2 != 0:     # Sum of degrees has to be even 
+            for idx in range(cluster_size):
+                if degree_array[idx] < cluster_size:
+                    degree_array[idx] += 1
+                    break
+        
+        while True:
+            edges = []
+            np.random.shuffle(possible_edges)           
+            current_degree = {n: 0 for n in nodes}
+
+            for u, v in possible_edges:
+                if (current_degree[u] < degree_array[u-i*cluster_size] and current_degree[v] < degree_array[v-i*cluster_size]):
+                    edges.append((u,v))
+                    current_degree[u] += 1
+                    current_degree[v] += 1
+                    
+                if all([current_degree[n] == degree_array[n-i*cluster_size] for n in nodes]):
+                    break
+                   
+            cluster = nx.Graph()
+            cluster.add_edges_from(edges)
+            
+            if nx.is_connected(cluster):
+                break
+
+        G.add_edges_from(edges)
+        nx.set_node_attributes(G, {n: {"Type": "Cluster", "Cluster": i+1} for n in nodes})
+
+
+    # Define connecting nodes
+    # Let's get user to define how many modules, which ones are connected (i.e. tuple: (1,2) ), and modules are numbered from left-to-right and top-to-bottom
+    # User can have random number of connections (with maximum being max_connecting_nodes) 
+    ## for each tuple combination or set number (i.e. define num_connections=True for random amounts)
+    # Let 'connections' be a list of tuples (i.e. [(1,2),(1,3),...]), must handle for duplicate connections (i.e. [(1,2),...,(1,2),...], or [(1,2),...,(2,1),...])
+
+    # This cleanup of the connect_list works better for smaller amount of modules
+    clean_up = [tuple(sorted(connect)) for connect in connect_list if connect[0] != connect[1]]    # sort tuples and remove redundant self-connections
+    new_connect_list = list(set(clean_up))     # remove duplicates using set()
+
+    # Number of connections for each connection defined
+    if num_connections:    # User input of number array
+        if len(new_connect_list) != len(num_connections):
+            raise Exception(f"Connections and number of connections are not the same dimension: {len(new_connect_list)} and {len(num_connections)}",
+                            "\nThe original connection list may have been cleaned up:",f"\n\t User input: {connect_list} \n\t Cleaned list: {new_connect_list}")
+        
+        else:
+            num_connect_array = num_connections.copy()
+            
+    else:    # Random number of connections with a max of user input
+        num_connect_array = np.random.randint(1, max_connecting_nodes + 1, size=len(new_connect_list))
+        
+    # Define new nodes to connect modules
+    connecting_nodes = [max(G.nodes)+(i+1) for i in range(sum(num_connect_array))]
+    G.add_nodes_from(connecting_nodes, Type="Connecting")
+
+    # Connecting the clusters together
+    # Note that this can choose random nodes within the clusters to connect (which can also be the same nodes with connections in series/parallel, or 
+    ## different cluster connecting nodes), choose the same nodes for each connection in series/parallel
+    if ran_cluster_connect:    # Will work on user input later
+        raise Exception('Must be "mix", "series", or "parallel"')
+    
+    else:  # Random nodes from modules are chosen
+        count = 0
+        
+        for connect, num in zip(new_connect_list, num_connect_array):
+            # Determine series/parallel configuration
+            if series_or_parallel:
+                series_parallel = 1 if series_or_parallel == 'series' else 0
+            else:
+                series_parallel = np.random.choice([0, 1])
+            
+            cluster_1, cluster_2 = connect
+            this_connect = connecting_nodes[count:count+num]
+            
+            if series_parallel == 1 or series_or_parallel == 'series':  # Series
+                cluster_1_node = np.random.choice([n for n, v in G.nodes(data=True) if v.get('Cluster') == cluster_1])
+                cluster_2_node = np.random.choice([n for n, v in G.nodes(data=True) if v.get('Cluster') == cluster_2])
+                
+                if num == 1:
+                    # Single connecting node connects both clusters
+                    G.add_edges_from([(cluster_1_node, this_connect[0]), (cluster_2_node, this_connect[0])])
+                else:
+                    # Chain of connecting nodes between the two clusters
+                    G.add_edge(cluster_1_node, this_connect[0])
+                    G.add_edge(cluster_2_node, this_connect[-1])
+                    for j in range(num - 1):
+                        G.add_edge(this_connect[j], this_connect[j + 1])
+            
+            else:  # Parallel or random
+                same = np.random.choice([0, 1])
+                
+                if same == 1 or series_or_parallel == 'parallel':  # Same connections (parallel)
+                    cluster_1_node = np.random.choice([n for n, v in G.nodes(data=True) if v.get('Cluster') == cluster_1])
+                    cluster_2_node = np.random.choice([n for n, v in G.nodes(data=True) if v.get('Cluster') == cluster_2])
+                    result = list(itertools.product([cluster_1_node, cluster_2_node], this_connect))
+                    G.add_edges_from(result)
+                
+                else:  # Different random connections
+                    for j in range(num):
+                        cluster_1_node = np.random.choice([n for n, v in G.nodes(data=True) if v.get('Cluster') == cluster_1])
+                        cluster_2_node = np.random.choice([n for n, v in G.nodes(data=True) if v.get('Cluster') == cluster_2])
+                        G.add_edges_from([(cluster_1_node, this_connect[j]), (cluster_2_node, this_connect[j])])
+            
+            count += num
+
+    if len(list(nx.connected_components(G))) > 1:     # Keep largest component
+        comps = list(nx.connected_components(G))
+        largest_comp = max(comps,key=len)
+        G.remove_nodes_from([node for node in G if node not in largest_comp])     # Remove isolated nodes
+    
+    if len([node for node, degree in G.degree() if degree < 2]) > 0:     # Remove nodes with k < 2
+        remove_nodes = [node for node, degree in G.degree() if degree < 2]
+        G.remove_nodes_from(remove_nodes)
+
+    return G
