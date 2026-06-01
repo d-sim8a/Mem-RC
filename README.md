@@ -17,7 +17,7 @@ I = \alpha_{1} (1-x)\left( 1-e^{-\beta_{1} V} \right) + \gamma x \sinh{\delta V}
 $$
 ## Nanowire Networks with Inherent Capactive Effects
 
-Nanowire networks are interesting due to the fact that the connections, or junctions, between the conductive wires are memristive devices. With this in mind, one may use Modified Nodal Analysis (MNA) <sup>[4](#mna_paper)</sup><sup>[5](#mna_site)</sup> as I did here, because the network can be translated into a graph representation; where wires are the nodes, and edges are the memristors. Using a forward Euler integration scheme, the network's dynamics can be simulated; each time step needs the static solution of MNA to solve for the voltage difference across each memristor. Hypothetically, any kind of memristor model can be used here, but for simplicity the Decay HP model <sup>[6](#decay_model)</sup> is used, which is described by:
+Nanowire networks are interesting due to the fact that the connections, or junctions, between the conductive wires are memristive devices. With this in mind, one may use Modified Nodal Analysis (MNA) <sup>[4](#mna_paper),</sup><sup>[5](#mna_site)</sup> as I did here, because the network can be translated into a graph representation; where wires are the nodes, and edges are the memristors. Using a forward Euler integration scheme, the network's dynamics can be simulated; each time step needs the static solution of MNA to solve for the voltage difference across each memristor. Hypothetically, any kind of memristor model can be used here, but for simplicity the Decay HP model <sup>[6](#decay_model)</sup> is used, which is described by:
 
 $$
 \frac{dx}{dt} = \frac{\mu_{\nu}R_{on}}{D^{2}}i(t) - \frac{x}{\tau} =  kR_{on}\frac{v(t)}{R_{M}(x)} - \frac{x}{\tau}
@@ -29,7 +29,7 @@ where the model closely resembles the classic HP model <sup>[7](#hp_model)</sup>
 In a recent paper <sup>[8](#inherent_cap)</sup>, the authors introduce the idea of an inherent capacitive effect for 2-terminal resistive switching devices. They introduce their proposed equivalent circuit, which now has a capacitor in parallel with the off-resistor, which is in series with the on-resistor. This means that the current is now represented by:
 
 $$
-I = G_{on}(x)(V_{in}-V_{i}) = G_{off}(x)(V_{i}-V_{out}) + \frac{d}{dt}\left( C(x)\left( V_{i}-V_{out}) \right)
+I = G_{on}(x)(V_{in}-V_{i}) = G_{off}(x)(V_{i}-V_{out}) + \frac{d}{dt}\left( C(x)\left( V_{i}-V_{out}\right) \right)
 $$
 
 where $G_{on}(x)$, $G_{off}(x), and $C(x)$ are the state-dependent on-conductance, off-conductance, and capacitances respectively. There is also the introduction of an internal node with a voltage of $V_{i}$. With this new internal node, brings more problems; an additional element with each memristive edge. This calls for a simplification of the model, so that we may bypass this internal node and solve for the nodal voltages at each time-step. The solution can be worked out, but the final expression for the current at discrete time-step $n+1$ is:
