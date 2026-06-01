@@ -40,7 +40,7 @@ $$
 
 where
 $$
-G^{n+1}_{eff} = \frac{G^{n+1}_{on}\left(G^{n+1}_{off}+\frac{C^{n+1}}{\Delta t}\right)}{G^{n+1}_{on}+G^{n+1}_{off}+\frac{C^{n+1}}{\Delta t}} 
+G^{n+1}_{eff}=\frac{G^{n+1}_{on}\left(G^{n+1}_{off}+\frac{C^{n+1}}{\Delta t}\right)}{G^{n+1}_{on}+G^{n+1}_{off}+\frac{C^{n+1}}{\Delta t}}
 $$
 
 $$
