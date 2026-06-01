@@ -32,7 +32,7 @@ $$
 I = G_{on}(x)(V_{in}-V_{i}) = G_{off}(x)(V_{i}-V_{out}) + \frac{d}{dt}\left( C(x)\left( V_{i}-V_{out}\right) \right)
 $$
 
-where $G_{on}(x)$, $G_{off}(x), and $C(x)$ are the state-dependent on-conductance, off-conductance, and capacitances respectively. There is also the introduction of an internal node with a voltage of $V_{i}$. With this new internal node, brings more problems; an additional element with each memristive edge. This calls for a simplification of the model, so that we may bypass this internal node and solve for the nodal voltages at each time-step. The solution can be worked out, but the final expression for the current at discrete time-step $n+1$ is:
+where $G_{on}(x)$, $G_{off}(x)$, and $C(x)$ are the state-dependent on-conductance, off-conductance, and capacitances respectively. There is also the introduction of an internal node with a voltage of $V_{i}$. With this new internal node, brings more problems; an additional element with each memristive edge. This calls for a simplification of the model, so that we may bypass this internal node and solve for the nodal voltages at each time-step. The solution can be worked out, but the final expression for the current at discrete time-step $n+1$ is:
 
 $$
 I^{n+1} = G_{eff}^{n+1}(V_{in}^{n+1}-V_{out}^{n+1}) - I_{C}^{n}
