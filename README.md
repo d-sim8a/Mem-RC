@@ -39,6 +39,7 @@ I^{n+1} = G_{eff}^{n+1}(V_{in}^{n+1}-V_{out}^{n+1}) - I_{C}^{n}
 $$
 
 where
+
 $$
 G^{n+1}_{eff}=\frac{G^{n+1}_{on}\left(G^{n+1}_{off}+\frac{C^{n+1}}{\Delta t}\right)}{G^{n+1}_{on}+G^{n+1}_{off}+\frac{C^{n+1}}{\Delta t}}
 $$
