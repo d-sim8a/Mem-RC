@@ -6,7 +6,7 @@ $$
 \mathbf{\phi} = \left(\mathbf{I^{T}}_{basis}\mathbf{I}_{basis}+\lambda_{ridge}\hat{I}_{d}\right)^{-1}(\mathbf{I}_{basis}^{T}\mathbf{y}_{sup})
 $$
 
-where $ \lambda_{ridge} $ is the regularization parameter, $ \hat{I}_{d} $ is the identity matrix, $ \mathbf{y}_{sup} $ is the desired supervisor function for which we wish to train, and $ \mathbf{I}_{basis} $ is the memristor current defined by the basis interval $ t \elem [t_{start},t_{end}] $. 
+where $\lambda_{ridge}$ is the regularization parameter, $\hat{I}_{d}$  is the identity matrix, $ \mathbf{y}_{sup} $ is the desired supervisor function for which we wish to train, and $ \mathbf{I}_{basis} $ is the memristor current defined by the basis interval $ t \elem [t_{start},t_{end}] $. 
 
 ## Non-Coupled Nonlinear Memristive System
 
