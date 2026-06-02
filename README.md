@@ -1,12 +1,12 @@
 # Memristive Reservoir Computing
 
-In this repository, you can find the results of my M.Sc. Thesis, co-supervised by Dr. Claudia Gomes da Rocha & Dr. Wilten Nicola. The thesis can be split into 3 different topics: Non-Coupled Nonlinear  Memristive System, "Random" Nanowire Networks with Inherent Capactive Effects, and Memristive-Based Integrate and Fire Neurons. Training of networks consisted of using memristor currents as a basis set, alongisde Tikhonov's Regularization, or Ridge Regression, to train for output layer weights $\vec{\phi}$ <sup>[1](#neural_net_txtbook)</sup>:
+In this repository, you can find the results of my M.Sc. Thesis, co-supervised by Dr. Claudia Gomes da Rocha & Dr. Wilten Nicola. The thesis can be split into 3 different topics: Non-Coupled Nonlinear  Memristive System, "Random" Nanowire Networks with Inherent Capactive Effects, and Memristive-Based Integrate and Fire Neurons. Training of networks consisted of using memristor currents as a basis set, alongisde Tikhonov's Regularization, or Ridge Regression, to train for output layer weights $\mathbf{\phi}$ <sup>[1](#neural_net_txtbook)</sup>:
 
 $$
-\vec{\phi} = \left(\vec{I}_{basis}^{T}\vec{I}_{basis}+\lambda_{ridge}\hat{I}_{d}\right)^{-1}(\vec{I}_{basis}^{T}\vec{y}_{sup})
+\mathbf{\phi} = \left(\mathbf{I^{T}}_{basis}\mathbf{I}_{basis}+\lambda_{ridge}\hat{I}_{d}\right)^{-1}(\mathbf{I}_{basis}^{T}\mathbf{y}_{sup})
 $$
 
-where $\lambda_{ridge}$ is the regularization parameter, $\hat{I}_{d}$ is the identity matrix, $\vec{y}_{sup}$ is the desired supervisor function for which we wish to train, and $\vec{I}_{basis}$ is the memristor current defined by the basis interval $t \elem [t_{start},t_{end}]$. 
+where $ \lambda_{ridge} $ is the regularization parameter, $ \hat{I}_{d} $ is the identity matrix, $ \mathbf{y}_{sup} $ is the desired supervisor function for which we wish to train, and $ \mathbf{I}_{basis} $ is the memristor current defined by the basis interval $ t \elem [t_{start},t_{end}] $. 
 
 ## Non-Coupled Nonlinear Memristive System
 
