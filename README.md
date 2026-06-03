@@ -3,10 +3,10 @@
 In this repository, you can find the results of my M.Sc. Thesis, co-supervised by Dr. Claudia Gomes da Rocha & Dr. Wilten Nicola. The thesis can be split into 3 different topics: Non-Coupled Nonlinear  Memristive System, "Random" Nanowire Networks with Inherent Capactive Effects, and Memristive-Based Integrate and Fire Neurons. Training of networks consisted of using memristor currents as a basis set, alongisde Tikhonov's Regularization, or Ridge Regression, to train for output layer weights $\mathbf{\phi}$ <sup>[1](#neural_net_txtbook)</sup>:
 
 $$
-\mathbf{\phi} = \left(\mathbf{I^{T}}_{basis}\mathbf{I}_{basis}+\lambda_{ridge}\hat{I}_{d}\right)^{-1}(\mathbf{I}_{basis}^{T}\mathbf{y}_{sup})
+\boldsymbol{\phi} = \left(\boldsymbol{I^{T}}_{\text{basis}}\boldsymbol{I}_{\text{basis}}+\lambda_{\text{r}}\boldsymbol{I_{\text{d}}}\right)^{-1}\left(\boldsymbol{I_{\text{basis}}}^{T}\boldsymbol{y_{\text{sup}}}\right)
 $$
 
-where $\lambda_{ridge}$ is the regularization parameter, $\hat{I}_{d}$  is the identity matrix, $ \mathbf{y}_{sup} $ is the desired supervisor function for which we wish to train, and $ \mathbf{I}_{basis} $ is the memristor current defined by the basis interval $ t \elem [t_{start},t_{end}] $. 
+where $\lambda_{\text{r}}$ is the regularization parameter, $\boldsymbol{I_{\text{d}}}$  is the identity matrix, $\boldsymbol{y_{\text{sup}}}$ is the desired supervisor function for which we wish to train, and $\boldsymbol{I_{\text{basis}}}$ is the memristor current defined by the basis interval $t \in \[t_{\text{start}},t_{\text{end}}\]$. 
 
 ## Non-Coupled Nonlinear Memristive System
 
