@@ -71,9 +71,11 @@ This circuit can exhibit firing, with defined and solvable firing rates, which d
 Suppose we switch the resistor with a memristor, we would now have the following equation for our circuit
 
 $$
-C\frac{dV}{dt} = I - \frac{V}{R_{M}(x)}
-\frac{dx}{dt} = f(V,x)
-V^{-}=V_{thresh} \rightarrow V^{+}=V_{reset}
+\begin{gather}
+C\frac{dV}{dt} = I - \frac{V}{R_{M}(x)} \\ 
+\frac{dx}{dt} = f(V,x) \\
+V\left(t^{-}\right)=V_{thresh} \quad \Rightarrow \quad V\left(t^{+}\right)=V_{reset}
+\end{gather}
 $$
 
 where we can choose some accepted state equation for our memristor state. 
