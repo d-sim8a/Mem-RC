@@ -1,6 +1,6 @@
 # Memristive Reservoir Computing
 
-In this repository, you can find the results of my M.Sc. Thesis, co-supervised by Dr. Claudia Gomes da Rocha & Dr. Wilten Nicola. The thesis can be split into 3 different topics: Non-Coupled Nonlinear  Memristive System, "Random" Nanowire Networks with Inherent Capactive Effects, and Memristive-Based Integrate and Fire Neurons. Training of networks consisted of using memristor currents as a basis set, alongisde Tikhonov's Regularization, or Ridge Regression, to train for output layer weights $\mathbf{\phi}$ <sup>[1](#neural_net_txtbook)</sup>:
+In this repository, you can find the results of my M.Sc. Thesis, co-supervised by Dr. Claudia Gomes da Rocha & Dr. Wilten Nicola. The thesis can be split into 3 different topics: Non-Coupled Nonlinear  Memristive System, "Random" Nanowire Networks with Inherent Capactive Effects, and Memristive-Based Integrate and Fire Neurons. Training of networks consisted of using memristor currents as a basis set, alongisde Tikhonov's Regularization, or Ridge Regression, to train for output layer weights $\mathbf{\phi}$<sup>[1](#neural_net_txtbook)</sup>:
 
 $$
 \boldsymbol{\phi} = \left(\boldsymbol{I^{T}}_{\text{basis}}\boldsymbol{I}_{\text{basis}}+\lambda_{\text{r}}\boldsymbol{I_{\text{d}}}\right)^{-1}\left(\boldsymbol{I_{\text{basis}}}^{T}\boldsymbol{y_{\text{sup}}}\right)
@@ -16,23 +16,23 @@ $$
 I = \alpha (1-x)\left( 1-e^{-\beta V} \right) + \gamma x \sinh{\delta V}
 $$
 
-where the first term corresponds to the Schottky current, and the second term corresponds to the tunneling current. This form is easily implemented for a non-coupled approach because of the non-Ohmic nature of the device. There was also the addition of a rectifying current, which was introduced in a paper with contributions from my supervisor <sup>[3](#ref2)</sup>:
+where the first term corresponds to the Schottky current, and the second term corresponds to the tunneling current. This form is easily implemented for a non-coupled approach because of the non-Ohmic nature of the device. There was also the addition of a rectifying current, which was introduced in a paper with contributions from my supervisor<sup>[3](#ref2)</sup>:
 
 $$
 I = \alpha_{1} (1-x)\left( 1-e^{-\beta_{1} V} \right) + \gamma x \sinh{\delta V} + \alpha_{2}\left( 1-e^{-\beta_{2} V} \right)
 $$
 ## Nanowire Networks with Inherent Capactive Effects
 
-Nanowire networks are interesting due to the fact that the connections, or junctions, between the conductive wires are memristive devices. With this in mind, one may use Modified Nodal Analysis (MNA) <sup>[4](#mna_paper),</sup><sup>[5](#mna_site)</sup> as I did here, because the network can be translated into a graph representation; where wires are the nodes, and edges are the memristors. Using a forward Euler integration scheme, the network's dynamics can be simulated; each time step needs the static solution of MNA to solve for the voltage difference across each memristor. Hypothetically, any kind of memristor model can be used here, but for simplicity the Decay HP model <sup>[6](#decay_model)</sup> is used, which is described by:
+Nanowire networks are interesting due to the fact that the connections, or junctions, between the conductive wires are memristive devices. With this in mind, one may use Modified Nodal Analysis (MNA)<sup>[4](#mna_paper),</sup><sup>[5](#mna_site)</sup> as I did here, because the network can be translated into a graph representation; where wires are the nodes, and edges are the memristors. Using a forward Euler integration scheme, the network's dynamics can be simulated; each time step needs the static solution of MNA to solve for the voltage difference across each memristor. Hypothetically, any kind of memristor model can be used here, but for simplicity the Decay HP model<sup>[6](#decay_model)</sup> is used, which is described by:
 
 $$
 \frac{dx}{dt} = \frac{\mu_{\nu}R_{on}}{D^{2}}i(t) - \frac{x}{\tau} =  kR_{on}\frac{v(t)}{R_{M}(x)} - \frac{x}{\tau}
 $$
 
-where the model closely resembles the classic HP model <sup>[7](#hp_model)</sup> but with an additional term to allow for a relaxation to the thermodynamically favourable high resistive state. 
+where the model closely resembles the classic HP model<sup>[7](#hp_model)</sup> but with an additional term to allow for a relaxation to the thermodynamically favourable high resistive state. 
 
 
-In a recent paper <sup>[8](#inherent_cap)</sup>, the authors introduce the idea of an inherent capacitive effect for 2-terminal resistive switching devices. They introduce their proposed equivalent circuit, which now has a capacitor in parallel with the off-resistor, which is in series with the on-resistor. This means that the current is now represented by:
+In a recent paper<sup>[8](#inherent_cap)</sup>, the authors introduce the idea of an inherent capacitive effect for 2-terminal resistive switching devices. They introduce their proposed equivalent circuit, which now has a capacitor in parallel with the off-resistor, which is in series with the on-resistor. This means that the current is now represented by:
 
 $$
 I = G_{on}(x)(V_{in}-V_{i}) = G_{off}(x)(V_{i}-V_{out}) + \frac{d}{dt}\left( C(x)\left( V_{i}-V_{out}\right) \right)
