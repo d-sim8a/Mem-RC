@@ -1,6 +1,12 @@
 # Memristive Reservoir Computing
 
-In this repository, you can find the results of my M.Sc. Thesis, co-supervised by Dr. Claudia Gomes da Rocha & Dr. Wilten Nicola. The thesis can be split into 3 different topics: Non-Coupled Nonlinear  Memristive System, "Random" Nanowire Networks with Inherent Capactive Effects, and Memristive-Based Integrate and Fire Neurons. Training of networks consisted of using memristor currents as a basis set, alongisde Tikhonov's Regularization, or Ridge Regression, to train for output layer weights $\mathbf{\phi}$<sup>[1](#neural_net_txtbook)</sup>:
+In this repository, you can find the results of my M.Sc. Thesis, co-supervised by Dr. Claudia Gomes da Rocha & Dr. Wilten Nicola. The thesis can be split into 3 different topics: 
+
+1. **Non-Coupled Nonlinear  Memristive System**
+2. **"Random" Nanowire Networks with Inherent Capactive Effects**
+3. **Memristive-Based Integrate and Fire Neurons**
+
+Training of networks consisted of using memristor currents as a basis set, alongisde ***Tikhonov's Regularization***, or ***Ridge Regression***, to train for output layer weights $\mathbf{\phi}$<sup>[1](#neural_net_txtbook)</sup>:
 
 $$
 \boldsymbol{\phi} = \left(\boldsymbol{I^{T}}_{\text{basis}}\boldsymbol{I}_{\text{basis}}+\lambda_{\text{r}}\boldsymbol{I_{\text{d}}}\right)^{-1}\left(\boldsymbol{I_{\text{basis}}}^{T}\boldsymbol{y_{\text{sup}}}\right)
@@ -13,17 +19,21 @@ where $\lambda_{\text{r}}$ is the regularization parameter, $\boldsymbol{I_{\tex
 This topic introduced some early network training considerations. I first considered a simple network, that consists of memristive units, that are not connected with each other in any fashion such that they do not "interact". Each memristive unit was governed by the following relations<sup>[2](#ref1)</sup>:
 
 $$
-I = \alpha (1-x)\left( 1-e^{-\beta V} \right) + \gamma x \sinh{(\delta V)}
+\begin{gather}
+I = \alpha (1-x)\left( 1-e^{-\beta V} \right) + \gamma x \sinh{(\delta V)} \\
+\frac{dx}{dt}= \lambda \sinh{(\eta V)} - \frac{x}{\tau}
+\end{gather}
 $$
 
-where the first term corresponds to the Schottky current, and the second term corresponds to the tunneling current. This form is easily implemented for a non-coupled approach because of the non-Ohmic nature of the device. There was also the addition of a rectifying current, which was introduced in a paper with contributions from my supervisor<sup>[3](#ref2)</sup>:
+where the first current contribution term corresponds to the **Schottky** current, and the second term corresponds to the **tunneling** current. This form is easily implemented for a non-coupled approach because of the non-Ohmic nature of the device. There can also be the addition of a rectifying current, which was introduced in a paper with contributions from my supervisor<sup>[3](#ref2)</sup>:
 
 $$
 I = \alpha_{1} (1-x)\left( 1-e^{-\beta_{1} V} \right) + \gamma x \sinh{(\delta V)} + \alpha_{2}\left( 1-e^{-\beta_{2} V} \right)
 $$
+
 ## Nanowire Networks with Inherent Capactive Effects
 
-Nanowire networks are interesting due to the fact that the connections, or junctions, between the conductive wires are memristive devices. With this in mind, one may use Modified Nodal Analysis (MNA)<sup>[4](#mna_paper),</sup><sup>[5](#mna_site)</sup> as I did here, because the network can be translated into a graph representation; where wires are the nodes, and edges are the memristors. Using a forward Euler integration scheme, the network's dynamics can be simulated; each time step needs the static solution of MNA to solve for the voltage difference across each memristor. Hypothetically, any kind of memristor model can be used here, but for simplicity the Decay HP model<sup>[6](#decay_model)</sup> is used, which is described by:
+Nanowire networks are interesting due to the fact that the connections, or junctions, between the conductive wires are memristive devices. With this in mind, one may use ***Modified Nodal Analysis*** (MNA)<sup>[4](#mna_paper),</sup><sup>[5](#mna_site)</sup> as I did here, because the network can be translated into a graph representation; where wires are the nodes, and edges are the memristors. Using a forward Euler integration scheme, the network's dynamics can be simulated; each time step needs the static solution of MNA to solve for the voltage difference across each memristor. Hypothetically, any kind of memristor model can be used here, but for simplicity the **Decay HP** model<sup>[6](#decay_model)</sup> is used, which is described by:
 
 $$
 \begin{align}
@@ -32,7 +42,7 @@ $$
 \end{align}
 $$
 
-where the model closely resembles the classic HP model<sup>[7](#hp_model)</sup> but with an additional term to allow for a relaxation to the thermodynamically favourable high resistive state. 
+where the model closely resembles the classic **HP model**<sup>[7](#hp_model)</sup> but with an additional term to allow for a relaxation to the thermodynamically favourable high resistive state. 
 
 
 In a recent paper<sup>[8](#inherent_cap)</sup>, the authors introduce the idea of an inherent capacitive effect for 2-terminal resistive switching devices. They introduce their proposed equivalent circuit, which now has a capacitor in parallel with the off-resistor, which is in series with the on-resistor. This means that the current is now represented by:
@@ -63,7 +73,7 @@ This form of equations is much easier to implement into an MNA pipeline than the
 
 ## Memristive-Based Integrate and Fire Neurons
 
-Neuronal dynamics presents itself in the form of an \textit{action potential}. This is the voltage difference of the inside and outside of the cell, which itself happens because of ion movement through membrane-embedded \textit{ion gates}. The simplest circuit of this action potential includes a resistor and capacitor in parallel, with a voltage threshold switch to force the voltage to return to some \textit{reset} when it reaches some defined \textit{threshold} value.
+Neuronal dynamics presents itself in the form of an *action potential*. This is the voltage difference of the inside and outside of the cell, which itself happens because of ion movement through membrane-embedded *ion gates*. The simplest circuit of this action potential includes a resistor and capacitor in parallel, with a voltage threshold switch to force the voltage to return to some *reset* when it reaches some defined *threshold* value.
 
 $$
 \begin{gather}
@@ -72,7 +82,7 @@ V\left(t^{-}\right)=V_{\text{thresh}} \quad \Rightarrow \quad V\left(t^{+}\right
 \end{gather}
 $$
 
-This circuit can exhibit firing, with defined and solvable firing rates, which depends on the input current and the values imposed by the resistor, capacitor, and threshold switch. 
+This circuit exhibits firing, with it's respective firing rates, which depend on the input current and the values imposed by the resistor, capacitor, and threshold switch. 
 
 Suppose we switch the resistor with a memristor, we would now have the following equation for our circuit
 
